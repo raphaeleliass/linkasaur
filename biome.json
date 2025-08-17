@@ -22,14 +22,21 @@
 			"!**/.expo",
 			"!**/.wrangler",
 			"!**/wrangler.jsonc",
-			"!**/.source"
+			"!**/.source",
+			"!apps/web/src/index.css",
+			"!**/prisma/generated"
 		]
 	},
 	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab"
+		"enabled": true
 	},
-	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
