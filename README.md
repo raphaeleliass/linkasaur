@@ -1,69 +1,51 @@
 # linkasaur
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Hono, and more.
+Uma ferramenta de código aberto simples e poderosa para gerenciar e encurtar seus links. Este projeto foi criado com uma stack TypeScript moderna que combina Next.js, Hono e muito mais.
 
-## Features
+## Funcionalidades
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Hono** - Lightweight, performant server framework
-- **Node.js** - Runtime environment
-- **Prisma** - TypeScript-first ORM
-- **PostgreSQL** - Database engine
-- **Authentication** - Email & password authentication with Better Auth
-- **Biome** - Linting and formatting
-- **Husky** - Git hooks for code quality
-- **Turborepo** - Optimized monorepo build system
+- **TypeScript** - Para segurança de tipos e melhor experiência de desenvolvimento
+- **Next.js** - Framework React full-stack
+- **TailwindCSS** - CSS utility-first para desenvolvimento rápido de UI
+- **shadcn/ui** - Componentes de UI reutilizáveis
+- **Hono** - Framework de servidor leve e performático
+- **Node.js** - Ambiente de execução
+- **Prisma** - ORM TypeScript-first
+- **PostgreSQL** - Mecanismo de banco de dados
+- **Autenticação** - Autenticação por e-mail e senha com Better Auth
+- **Biome** - Linting e formatação
+- **Husky** - Hooks do Git para qualidade de código
+- **Turborepo** - Sistema de build otimizado para monorepo
 
-## Getting Started
+## Desenvolvimento
 
-First, install the dependencies:
-
-```bash
-pnpm install
-```
-## Database Setup
-
-This project uses PostgreSQL with Prisma.
-
-1. Make sure you have a PostgreSQL database set up.
-2. Update your `apps/server/.env` file with your PostgreSQL connection details.
-
-3. Generate the Prisma client and push the schema:
-```bash
-pnpm db:push
-```
-
-
-Then, run the development server:
+Para executar o servidor de desenvolvimento:
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-The API is running at [http://localhost:3000](http://localhost:3000).
+Abra [http://localhost:3001](http://localhost:3001) no seu navegador para ver a aplicação web.
+A API está rodando em [http://localhost:3000](http://localhost:3000).
 
 
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 linkasaur/
 ├── apps/
-│   ├── web/         # Frontend application (Next.js)
-│   └── server/      # Backend API (Hono)
+│   ├── web/         # Aplicação frontend (Next.js)
+│   └── server/      # API backend (Hono)
 ```
 
-## Available Scripts
+## Scripts Disponíveis
 
-- `pnpm dev`: Start all applications in development mode
-- `pnpm build`: Build all applications
-- `pnpm dev:web`: Start only the web application
-- `pnpm dev:server`: Start only the server
-- `pnpm check-types`: Check TypeScript types across all apps
-- `pnpm db:push`: Push schema changes to database
-- `pnpm db:studio`: Open database studio UI
-- `pnpm check`: Run Biome formatting and linting
+- `pnpm dev`: Inicia todas as aplicações em modo de desenvolvimento
+- `pnpm build`: Compila todas as aplicações
+- `pnpm dev:web`: Inicia apenas a aplicação web
+- `pnpm dev:server`: Inicia apenas o servidor
+- `pnpm check-types`: Verifica os tipos TypeScript em todas as aplicações
+- `pnpm db:push`: Envia as alterações do schema para o banco de dados
+- `pnpm db:studio`: Abre a UI do studio do banco de dados
+- `pnpm check`: Executa a formatação e o linting do Biome
