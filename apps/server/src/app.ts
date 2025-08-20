@@ -1,11 +1,16 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { prettyJSON } from "hono/pretty-json";
 import type { AppVariables } from "types/appVariables";
 import { auth } from "./lib/auth";
+import { authMiddleware } from "./middlewares/auth.middleware";
+import { errorMiddleware } from "./middlewares/error.middleware";
+import { appRouter } from "./routers";
 
 export const app = new Hono<AppVariables>();
 
+app.use(prettyJSON());
 app.use(logger());
 app.use(
 	"/*",
@@ -32,27 +37,11 @@ app.use("*", async (c, next) => {
 	return next();
 });
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
-app.get("/", (c) => {
-	return c.text("OK");
-});
+app.use("/user/link/*", authMiddleware);
 
-app.post("/sign-in", async (c) => {
-	const { email, password } = await c.req.json();
+app.route("/user/link", appRouter.linkRouter);
+app.route("/user", appRouter.userRouter);
 
-	const user = await auth.api.signInEmail({
-		body: {
-			email,
-			password,
-		},
-	});
-
-	return c.json(user);
-});
-
-app.get("/valid", (c) => {
-	const user = c.get("user");
-	if (!user) return c.json({ message: "not auth" });
-	return c.json({ message: "pass" });
-});
+app.onError(errorMiddleware);
