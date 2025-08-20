@@ -25,6 +25,7 @@ export default function SignUpForm({
 		onSubmit: async ({ value }) => {
 			await authClient.signUp.email(
 				{
+					username: `username${Math.floor(Math.random() * 999)}`,
 					email: value.email,
 					password: value.password,
 					name: value.name,
