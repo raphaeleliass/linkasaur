@@ -10,7 +10,7 @@ model User {
   displayUsername String?
   sessions        Session[]
   accounts        Account[]
-  Link            Link[]
+  links            Link[]
 
   @@unique([email])
   @@unique([username])
