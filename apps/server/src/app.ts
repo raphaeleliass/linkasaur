@@ -1,17 +1,34 @@
+import { swaggerUI } from "@hono/swagger-ui";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { prettyJSON } from "hono/pretty-json";
+import { rateLimiter } from "hono-rate-limiter";
 import type { AppVariables } from "types/appVariables";
 import { auth } from "./lib/auth";
+import { openApiDoc } from "./lib/openApiDoc";
 import { authMiddleware } from "./middlewares/auth.middleware";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { appRouter } from "./routers";
 
 export const app = new Hono<AppVariables>();
 
-app.use(prettyJSON());
 app.use(logger());
+
+app.use(prettyJSON());
+
+app.use(
+	rateLimiter({
+		windowMs: 20 * 60 * 1000,
+		limit: 100,
+		standardHeaders: "draft-6",
+		keyGenerator: (c) =>
+			c.req.header("x-forwarded-for") ??
+			c.req.raw.headers.get("host") ??
+			"unknown",
+	}),
+);
+
 app.use(
 	"/*",
 	cors({
@@ -44,4 +61,16 @@ app.use("/user/link/*", authMiddleware);
 app.route("/user/link", appRouter.linkRouter);
 app.route("/user", appRouter.userRouter);
 
-app.onError(errorMiddleware);
+app.get("/api/health", (c) => {
+	return c.json({
+		message: "Service is healthy",
+	});
+});
+
+app.get("/docs", (c) => c.json(openApiDoc));
+
+app.get("/docs/ui", swaggerUI({ url: "/docs" }));
+
+app.onError((err, c) => {
+	return errorMiddleware(err, c);
+});
