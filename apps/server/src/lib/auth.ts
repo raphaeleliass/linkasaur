@@ -13,9 +13,7 @@ export const auth = betterAuth({
 	},
 
 	advanced: {
-		crossSubDomainCookies: {
-			enabled: true,
-		},
+		cookiePrefix: "linkasaur",
 		defaultCookieAttributes: {
 			sameSite: "none",
 			secure: true,
