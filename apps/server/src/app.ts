@@ -1,12 +1,34 @@
+import { swaggerUI } from "@hono/swagger-ui";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { prettyJSON } from "hono/pretty-json";
+import { rateLimiter } from "hono-rate-limiter";
 import type { AppVariables } from "types/appVariables";
 import { auth } from "./lib/auth";
+import { openApiDoc } from "./lib/openApiDoc";
+import { authMiddleware } from "./middlewares/auth.middleware";
+import { errorMiddleware } from "./middlewares/error.middleware";
+import { appRouter } from "./routers";
 
 export const app = new Hono<AppVariables>();
 
 app.use(logger());
+
+app.use(prettyJSON());
+
+app.use(
+	rateLimiter({
+		windowMs: 20 * 60 * 1000,
+		limit: 100,
+		standardHeaders: "draft-6",
+		keyGenerator: (c) =>
+			c.req.header("x-forwarded-for") ??
+			c.req.raw.headers.get("host") ??
+			"unknown",
+	}),
+);
+
 app.use(
 	"/*",
 	cors({
@@ -32,27 +54,23 @@ app.use("*", async (c, next) => {
 	return next();
 });
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
-app.get("/", (c) => {
-	return c.text("OK");
-});
+app.use("/user/link/*", authMiddleware);
 
-app.post("/sign-in", async (c) => {
-	const { email, password } = await c.req.json();
+app.route("/user/link", appRouter.linkRouter);
+app.route("/user", appRouter.userRouter);
 
-	const user = await auth.api.signInEmail({
-		body: {
-			email,
-			password,
-		},
+app.get("/api/health", (c) => {
+	return c.json({
+		message: "Service is healthy",
 	});
-
-	return c.json(user);
 });
 
-app.get("/valid", (c) => {
-	const user = c.get("user");
-	if (!user) return c.json({ message: "not auth" });
-	return c.json({ message: "pass" });
+app.get("/docs", (c) => c.json(openApiDoc));
+
+app.get("/docs/ui", swaggerUI({ url: "/docs" }));
+
+app.onError((err, c) => {
+	return errorMiddleware(err, c);
 });
