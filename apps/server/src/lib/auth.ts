@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { username } from "better-auth/plugins";
 import prisma from "../../prisma";
 
 export const auth = betterAuth({
@@ -12,9 +13,7 @@ export const auth = betterAuth({
 	},
 
 	advanced: {
-		crossSubDomainCookies: {
-			enabled: true,
-		},
+		cookiePrefix: "linkasaur",
 		defaultCookieAttributes: {
 			sameSite: "none",
 			secure: true,
@@ -30,4 +29,5 @@ export const auth = betterAuth({
 			},
 		},
 	},
+	plugins: [username()],
 });
