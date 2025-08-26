@@ -5,7 +5,20 @@
 		"build": {
 			"dependsOn": ["^build"],
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
-			"outputs": ["dist/**"]
+			"outputs": ["dist/**"],
+			"env": ["NEXT_PUBLIC_*"]
+		},
+		"server#build": {
+			"env": [
+				"DATABASE_URL",
+				"CORS_ORIGIN",
+				"BETTER_AUTH_SECRET",
+				"BETTER_AUTH_URL",
+				"BETTER_AUTH_TELEMETRY"
+			]
+		},
+		"web#build": {
+			"env": ["NEXT_PUBLIC_API_URL", "NEXT_PUBLIC_AUTH_URL"]
 		},
 		"lint": {
 			"dependsOn": ["^lint"]
