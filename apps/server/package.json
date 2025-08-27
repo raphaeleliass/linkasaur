@@ -3,7 +3,7 @@
 	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"build": "prisma generate && tsdown",
+		"build": "prisma generate && tsdown -d public",
 		"test": "vitest",
 		"check-types": "tsc -b",
 		"compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
