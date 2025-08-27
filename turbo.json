@@ -8,7 +8,7 @@
 			"outputs": ["dist/**"],
 			"env": ["NEXT_PUBLIC_*"]
 		},
-		"server#build": {
+		"api#build": {
 			"env": [
 				"DATABASE_URL",
 				"CORS_ORIGIN",
