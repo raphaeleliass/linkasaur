@@ -1,6 +1,6 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { PrismaClientKnownRequestError } from "prisma/generated/internal/prismaNamespace";
 
 export const errorMiddleware = (error: Error, c: Context) => {
 	if (error instanceof HTTPException) {
