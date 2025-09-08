@@ -23,7 +23,6 @@
 			"!**/.wrangler",
 			"!**/wrangler.jsonc",
 			"!**/.source",
-			"!apps/web/src/index.css",
 			"!**/prisma/generated"
 		]
 	},
@@ -70,6 +69,11 @@
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double"
+		}
+	},
+	"css": {
+		"linter": {
+			"enabled": false
 		}
 	}
 }
