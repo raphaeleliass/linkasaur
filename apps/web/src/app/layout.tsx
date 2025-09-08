@@ -1,22 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "../index.css";
-import Header from "@/components/header";
+import { Inter, Lexend, Roboto_Serif } from "next/font/google";
+import "./global.css";
 import Providers from "@/components/providers";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
+const inter = Inter({
+	subsets: ["latin", "latin-ext"],
+	variable: "--font-inter",
+	preload: true,
 });
-
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
+const lexend = Lexend({
+	subsets: ["latin", "latin-ext"],
+	variable: "--font-lexend",
+	preload: true,
+});
+const robotoSerif = Roboto_Serif({
+	subsets: ["latin", "latin-ext"],
+	variable: "--font-roboto-serif",
+	preload: true,
 });
 
 export const metadata: Metadata = {
 	title: "linkasaur",
-	description: "linkasaur",
+	description:
+		"Welcome to linkasaur, your link management solution. Create, organize, and share your links with ease. Join us today!",
 };
 
 export default function RootLayout({
@@ -25,15 +31,12 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="pt-BR" suppressHydrationWarning>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${lexend.variable} ${robotoSerif.variable} ${inter.variable} antialiased`}
 			>
 				<Providers>
-					<div className="grid h-svh grid-rows-[auto_1fr]">
-						<Header />
-						{children}
-					</div>
+					<div className="grid h-svh grid-rows-[auto_1fr]">{children}</div>
 				</Providers>
 			</body>
 		</html>
