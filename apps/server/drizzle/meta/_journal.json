@@ -1,0 +1,34 @@
+{
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1757507895173,
+			"tag": "0000_special_madame_masque",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1757513632889,
+			"tag": "0001_long_mister_fear",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1757514633309,
+			"tag": "0002_chunky_power_man",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1757515048315,
+			"tag": "0003_shocking_lifeguard",
+			"breakpoints": true
+		}
+	]
+}
