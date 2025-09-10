@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { cache } from "hono/cache";
 import { db } from "@/db/db";
 import { UserController } from "@/modules/user/user.controller";
 import { UserRepository } from "@/modules/user/user.repository";
@@ -11,8 +10,4 @@ const userRepository = new UserRepository(db);
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-userRouter.get(
-	"/:username",
-	userController.getUserByUsername,
-	cache({ cacheName: "Linkasaur", cacheControl: "max-age=3600", wait: true }),
-);
+userRouter.get("/:username", userController.getUserByUsername);
