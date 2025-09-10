@@ -1,15 +1,19 @@
-import type { PrismaClient } from "prisma/generated/client";
+import { eq } from "drizzle-orm";
+import type { db } from "@/db/db";
+import { linkTable } from "@/db/schema";
 import type {
 	createLinkType,
 	deleteLinkType,
 	updateLinkType,
 } from "./link.types";
 
-export class LinkRepository {
-	prisma: PrismaClient;
+export type DrizzleDB = typeof db;
 
-	constructor(prisma: PrismaClient) {
-		this.prisma = prisma;
+export class LinkRepository {
+	db: DrizzleDB;
+
+	constructor(db: DrizzleDB) {
+		this.db = db;
 	}
 
 	async createLink({
@@ -17,34 +21,38 @@ export class LinkRepository {
 		title,
 		href,
 	}: createLinkType & { userId: string }) {
-		const createdLink = await this.prisma.link.create({
-			data: { userId, title, href },
-		});
+		const createdLink = await this.db
+			.insert(linkTable)
+			.values({ title, href, userId })
+			.returning();
 
 		return createdLink;
 	}
 
 	async getLinkById({ id }: deleteLinkType) {
-		const link = await this.prisma.link.findUnique({
-			where: { id },
-		});
+		const link = await this.db
+			.select()
+			.from(linkTable)
+			.where(eq(linkTable.id, id));
 
-		return link;
+		return link[0];
 	}
 
 	async updateLink({ id, title, href }: updateLinkType) {
-		const updatedLink = await this.prisma.link.update({
-			where: { id },
-			data: { id, title, href },
-		});
+		const updatedLink = await this.db
+			.update(linkTable)
+			.set({ title, href })
+			.where(eq(linkTable.id, id))
+			.returning();
 
 		return updatedLink;
 	}
 
 	async deleteLink({ id }: deleteLinkType) {
-		const deletedLink = await this.prisma.link.delete({
-			where: { id },
-		});
+		const deletedLink = await this.db
+			.delete(linkTable)
+			.where(eq(linkTable.id, id))
+			.returning();
 
 		return deletedLink;
 	}
