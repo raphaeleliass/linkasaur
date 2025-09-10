@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import type { AppVariables } from "types/appVariables";
+import { db } from "@/db/db";
 import { validateMiddleware } from "@/middlewares/validate.middleware";
 import { LinkController } from "@/modules/link/link.controller";
 import { LinkRepository } from "@/modules/link/link.repository";
@@ -9,11 +10,10 @@ import {
 	updateLinkSchema,
 } from "@/modules/link/link.schemas";
 import { LinkService } from "@/modules/link/link.service";
-import prisma from "../../prisma/index";
 
 export const linkRouter = new Hono<AppVariables>();
 
-const linkRepository = new LinkRepository(prisma);
+const linkRepository = new LinkRepository(db);
 const linkService = new LinkService(linkRepository);
 const linkController = new LinkController(linkService);
 
