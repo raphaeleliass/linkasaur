@@ -12,9 +12,9 @@ O Linkasaur é uma aplicação full-stack que permite aos usuários gerenciar se
 
 O projeto adota uma arquitetura limpa e modular, seguindo princípios como SOLID e separação de responsabilidades. Isso garante um código organizado, fácil de manter e expandir. A estrutura é dividida em:
 
--   **`apps/server`**: Backend da aplicação, responsável pela lógica de negócios, autenticação e interação com o banco de dados.
+-   **`apps/api`**: Backend da aplicação, responsável pela lógica de negócios, autenticação e interação com o banco de dados.
 
-### Tecnologias Utilizadas (Backend - `apps/server`)
+### Tecnologias Utilizadas (Backend - `apps/api`)
 
 -   **TypeScript**: Garante maior segurança de tipo e melhora a manutenibilidade do código.
 -   **Hono**: Um framework web rápido e leve para construir APIs, otimizado para edge runtimes.
@@ -25,7 +25,7 @@ O projeto adota uma arquitetura limpa e modular, seguindo princípios como SOLID
 
 ### Estrutura do Código
 
-A estrutura do backend (`apps/server`) é organizada de forma clara:
+A estrutura do backend (`apps/api`) é organizada de forma clara:
 
 -   **`src/app.ts`**: Configuração principal da aplicação Hono, incluindo middlewares globais como CORS, logging e autenticação.
 -   **`src/lib/auth.ts`**: Configuração da biblioteca de autenticação `better-auth`.
@@ -41,7 +41,7 @@ Para configurar e rodar o backend do Linkasaur, siga os passos abaixo:
 1.  **Clone o repositório:**
     ```bash
     git clone [https://github.com/raphaeleliass/linkasaur]
-    cd linkasaur/apps/server
+    cd linkasaur/apps/api
     ```
 
 2.  **Instale as dependências:**
@@ -55,7 +55,7 @@ Para configurar e rodar o backend do Linkasaur, siga os passos abaixo:
     ```
 
 3.  **Configure as variáveis de ambiente:**
-    Crie um arquivo `.env` na raiz do diretório `apps/server` baseado no `.env.example` e preencha com suas configurações de banco de dados e CORS.
+    Crie um arquivo `.env` na raiz do diretório `apps/api` baseado no `.env.example` e preencha com suas configurações de banco de dados e CORS.
     ```
     DATABASE_URL="postgresql://user:password@host:port/database"
     CORS_ORIGIN="http://localhost:3000" # ou a URL do seu frontend
