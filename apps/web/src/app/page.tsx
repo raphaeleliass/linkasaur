@@ -1,4 +1,4 @@
-import Features from "@/components/pages/home/features/features";
+import Features from "@/components/pages/home/features";
 import Hero from "@/components/pages/home/hero";
 import Navbar from "@/components/pages/home/navbar";
 
