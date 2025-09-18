@@ -11,6 +11,10 @@ export class LinkService {
 
 	constructor(linkRepository: LinkRepository) {
 		this.linkRepository = linkRepository;
+
+		this.createLink.bind(this);
+		this.deleteLink.bind(this);
+		this.updateLink.bind(this);
 	}
 
 	async createLink(data: createLinkType & { userId: string }) {
