@@ -7,7 +7,7 @@ import {
 	sessionTable,
 	userTable,
 	verificationTable,
-} from "@/db/schema";
+} from "@/db/schemas/auth";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -23,7 +23,7 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 	},
-
+	plugins: [username()],
 	advanced: {
 		cookiePrefix: "linkasaur",
 		defaultCookieAttributes: {
@@ -40,6 +40,11 @@ export const auth = betterAuth({
 				},
 			},
 		},
+		session: {
+			cookieCache: {
+				enabled: true,
+				maxAge: 5 * 60,
+			},
+		},
 	},
-	plugins: [username()],
 });
