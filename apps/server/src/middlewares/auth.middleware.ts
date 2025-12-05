@@ -1,5 +1,5 @@
 import type { MiddlewareHandler } from "hono";
-import type { AppVariables } from "types/appVariables";
+import type { AppVariables } from "@/types/appVariables";
 
 export const authMiddleware: MiddlewareHandler<AppVariables> = async (
 	c,
