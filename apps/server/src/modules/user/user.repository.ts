@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { linkTable, userTable } from "@/db/schema";
+import { userTable } from "@/db/schemas/auth";
 import type { DrizzleDB } from "../link/link.repository";
-import type { usernameTypes } from "./user.types";
+import type { TGetMe, TGetUser } from "./user.types";
 
 export class UserRepository {
 	db: DrizzleDB;
@@ -10,20 +10,32 @@ export class UserRepository {
 		this.db = db;
 	}
 
-	async getUserByUsername({ username }: usernameTypes) {
-		const user = await this.db
-			.select({
-				name: userTable.name,
-				displayUsername: userTable.displayUsername,
-				image: userTable.image,
-				linkId: linkTable.id,
-				linkTitle: linkTable.title,
-				linkHref: linkTable.href,
-			})
-			.from(userTable)
-			.leftJoin(linkTable, eq(linkTable.userId, userTable.id))
-			.where(eq(userTable.username, username));
+	getMe = async ({ id }: TGetMe) => {
+		const me = await this.db.query.userTable.findFirst({
+			where: eq(userTable.id, id),
+			with: {
+				links: true,
+			},
+		});
 
-		return user;
-	}
+		return me || null;
+	};
+
+	getUser = async ({ username }: TGetUser) => {
+		const user = await this.db.query.userTable.findFirst({
+			where: eq(userTable.username, username),
+			columns: {
+				id: false,
+				email: false,
+				emailVerified: false,
+				createdAt: false,
+				updatedAt: false,
+			},
+			with: {
+				links: true,
+			},
+		});
+
+		return user || null;
+	};
 }

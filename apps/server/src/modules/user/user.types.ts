@@ -1,4 +1,6 @@
 import type z from "zod";
-import type { usernameSchema } from "./user.schemas";
+import type { getMeSchema, getUserSchema, userSchema } from "./user.schemas";
 
-export type usernameTypes = z.infer<typeof usernameSchema>;
+export type TUser = z.infer<typeof userSchema>;
+export type TGetMe = z.infer<typeof getMeSchema>;
+export type TGetUser = z.infer<typeof getUserSchema>;
