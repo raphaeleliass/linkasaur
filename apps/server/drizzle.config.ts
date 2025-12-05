@@ -6,7 +6,7 @@ const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("Missing Database Connection string!");
 
 export default defineConfig({
-	schema: "src/db/schema.ts",
+	schema: "src/db/schemas",
 	out: "./drizzle",
 	dialect: "postgresql",
 	dbCredentials: {
