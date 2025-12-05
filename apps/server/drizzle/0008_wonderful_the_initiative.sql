@@ -1,0 +1,1 @@
+ALTER TABLE "link" RENAME COLUMN "href" TO "url";

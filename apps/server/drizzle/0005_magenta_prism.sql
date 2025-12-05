@@ -1,0 +1,1 @@
+ALTER TABLE "link" RENAME COLUMN "updatedAt" TO "updated_at";

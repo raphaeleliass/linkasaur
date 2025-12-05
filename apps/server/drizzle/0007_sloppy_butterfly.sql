@@ -1,0 +1,1 @@
+ALTER TABLE "link" ALTER COLUMN "updated_at" SET NOT NULL;
