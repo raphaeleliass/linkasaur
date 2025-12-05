@@ -1,9 +1,10 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import type { db } from "@/db/db";
-import { linkTable } from "@/db/schema";
+import { linkTable } from "@/db/schemas/link";
 import type {
 	createLinkType,
 	deleteLinkType,
+	getLinksType,
 	updateLinkType,
 } from "./link.types";
 
@@ -16,44 +17,47 @@ export class LinkRepository {
 		this.db = db;
 	}
 
-	async createLink({
-		userId,
-		title,
-		href,
-	}: createLinkType & { userId: string }) {
-		const createdLink = await this.db
-			.insert(linkTable)
-			.values({ title, href, userId })
-			.returning();
-
-		return createdLink;
-	}
-
-	async getLinkById({ id }: deleteLinkType) {
-		const link = await this.db
-			.select()
+	getLinks = async ({ userId }: getLinksType) => {
+		const links = await this.db
+			.select({
+				id: linkTable.id,
+				title: linkTable.title,
+				url: linkTable.url,
+				index: linkTable.index,
+				createdAt: linkTable.createdAt,
+				updatedAt: linkTable.updatedAt,
+			})
 			.from(linkTable)
-			.where(eq(linkTable.id, id));
+			.where(eq(linkTable.userId, userId));
 
-		return link[0];
-	}
+		return links || null;
+	};
 
-	async updateLink({ id, title, href }: updateLinkType) {
-		const updatedLink = await this.db
+	createLink = async ({ userId, title, url, index }: createLinkType) => {
+		const [createdLink] = await this.db
+			.insert(linkTable)
+			.values({ title, url, index, userId })
+			.returning();
+
+		return createdLink || null;
+	};
+
+	updateLink = async ({ id, title, url, userId, index }: updateLinkType) => {
+		const [updatedLink] = await this.db
 			.update(linkTable)
-			.set({ title, href })
-			.where(eq(linkTable.id, id))
+			.set({ title, url, index })
+			.where(and(eq(linkTable.userId, userId), eq(linkTable.id, id)))
 			.returning();
 
-		return updatedLink;
-	}
+		return updatedLink || null;
+	};
 
-	async deleteLink({ id }: deleteLinkType) {
-		const deletedLink = await this.db
+	deleteLink = async ({ id, userId }: deleteLinkType) => {
+		const [deletedLink] = await this.db
 			.delete(linkTable)
-			.where(eq(linkTable.id, id))
+			.where(and(eq(linkTable.id, id), eq(linkTable.userId, userId)))
 			.returning();
 
-		return deletedLink;
-	}
+		return deletedLink || null;
+	};
 }

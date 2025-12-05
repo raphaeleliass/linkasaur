@@ -1,57 +1,62 @@
 import type { Context } from "hono";
-import type { AppVariables } from "types/appVariables";
+import type { AppVariables } from "@/types/appVariables";
 import type { LinkService } from "./link.service";
-import type {
-	createLinkType,
-	deleteLinkType,
-	updateLinkType,
-} from "./link.types";
+
+export type HonoVariables = Context<AppVariables>;
 
 export class LinkController {
 	linkService: LinkService;
 
 	constructor(linkService: LinkService) {
 		this.linkService = linkService;
-
-		this.createLink = this.createLink.bind(this);
-		this.updatedLink = this.updatedLink.bind(this);
-		this.deleteLink = this.deleteLink.bind(this);
 	}
 
-	async createLink(c: Context<AppVariables>) {
-		const { title, href } = c.get("validatedData") as createLinkType;
-		const user = c.get("user");
+	getLinks = async (c: HonoVariables) => {
+		const userId = c.get("userId") || "";
 
-		if (!user) return;
+		const links = await this.linkService.getLinks({ userId });
+
+		return c.json(links);
+	};
+
+	createLink = async (c: HonoVariables) => {
+		const userId = c.get("userId") || "";
+		const { title, url, index } = await c.req.json();
 
 		const createdLink = await this.linkService.createLink({
-			userId: user.id,
 			title,
-			href,
+			url,
+			index,
+			userId,
 		});
 
 		return c.json(createdLink, 200);
-	}
+	};
 
-	async updatedLink(c: Context<AppVariables>) {
-		const { id, title, href } = c.get("validatedData") as updateLinkType;
-		const user = c.get("user");
-		if (!user) return;
+	updateLink = async (c: HonoVariables) => {
+		const userId = c.get("userId") || "";
+		const { id, title, url, index } = await c.req.json();
 
-		const updatedLink = await this.linkService.updateLink(
-			{ id, title, href },
-			user.id,
-		);
+		const updatedLink = await this.linkService.updateLink({
+			id,
+			title,
+			url,
+			index,
+			userId,
+		});
 
 		return c.json(updatedLink, 200);
-	}
+	};
 
-	async deleteLink(c: Context<AppVariables>) {
-		const id = c.get("validatedData") as deleteLinkType;
-		const user = c.get("user");
-		if (!user) return;
-		const deletedLink = await this.linkService.deleteLink(id, user.id);
+	deleteLink = async (c: HonoVariables) => {
+		const userId = c.get("userId") || "";
+		const id = c.req.query("id") || "";
+
+		const deletedLink = await this.linkService.updateLink({
+			id,
+			userId,
+		});
 
 		return c.json(deletedLink, 200);
-	}
+	};
 }
