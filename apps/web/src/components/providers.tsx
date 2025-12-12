@@ -1,19 +1,28 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { authClient } from "@/lib/auth-client";
+import { userStore } from "@/store/userStore";
+import FooterSection from "./footer";
+import Header from "./header";
 import { ThemeProvider } from "./theme-provider";
 import { Toaster } from "./ui/sonner";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-	const [mounted, setMounted] = useState(false);
+	const { setUser } = userStore();
 
+	// biome-ignore lint: not necessary add setUser to array of dependencies
 	useEffect(() => {
-		setMounted(true);
-	}, []);
+		(async () => {
+			const { data } = await authClient.getSession();
 
-	if (!mounted) {
-		return <>{children}</>;
-	}
+			if (!data) {
+				setUser(null);
+				return;
+			}
+
+			setUser(data.user);
+		})();
+	}, []);
 
 	return (
 		<ThemeProvider
@@ -22,8 +31,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 			enableSystem
 			disableTransitionOnChange
 		>
+			<Header />
 			{children}
 			<Toaster richColors />
+			<FooterSection />
 		</ThemeProvider>
 	);
 }
