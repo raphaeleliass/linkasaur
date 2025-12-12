@@ -23,8 +23,9 @@
 			"!**/.wrangler",
 			"!**/wrangler.jsonc",
 			"!**/.source",
-			"!apps/web/src/index.css",
-			"!**/prisma/generated"
+			"!apps/web/src/app/index.css",
+			"!**/prisma/generated",
+			"!apps/web/src/components/ui/animated-group.tsx"
 		]
 	},
 	"formatter": {
